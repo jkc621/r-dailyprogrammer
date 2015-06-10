@@ -1,0 +1,6 @@
+		Size	Number Of Logs
+input1	4		200
+input2	15		2048
+input3	1 		41
+input4	12		10000
+input5	500		100000

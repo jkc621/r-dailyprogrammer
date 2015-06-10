@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+// using System.Diagnostics;
 
 public class Lumberjack
 {
@@ -27,8 +28,12 @@ public class Lumberjack
 		Console.WriteLine("Enter the number of available logs");
 		int availableLogs = Convert.ToInt32(Console.ReadLine());
 		int storageSizeSquared = storageSize*storageSize;
-
 		currentPile = currentPile.TrimEnd();
+
+
+		// Stopwatch sw = new Stopwatch(); //Timer
+		// sw.Start();						//Timer
+
 		char[] delimiters = {' ','\t'};
 		string[] currentPileArrayString = currentPile.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 		int[] pileArray = new int[currentPileArrayString.Length];
@@ -61,6 +66,8 @@ public class Lumberjack
 			}
 		}
 
+		// sw.Stop(); //Timer
+
 
 		Console.WriteLine(" ");
 		Console.WriteLine("--- Output ---");
@@ -78,6 +85,8 @@ public class Lumberjack
 				Console.Write("{0} ", pileArray[i]);
 			}
 		}
+
+		Console.WriteLine("Operation elapsed in: {0}", sw.Elapsed);
 
 	}
 }
