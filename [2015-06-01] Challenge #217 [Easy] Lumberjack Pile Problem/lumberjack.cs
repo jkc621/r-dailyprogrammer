@@ -1,27 +1,36 @@
 using System;
+using System.IO;
 
 public class Lumberjack
 {
-	static void Main()
+	static void Main(string[] args)
 	{
+		string testInput = "";
+		string currentPile = "";
+		
+		var path = args[0];
+		if (File.Exists(path))
+		{
+			System.IO.StreamReader file = new System.IO.StreamReader(path);
+			testInput = file.ReadLine();
+
+			while (testInput!=null)
+			{
+				currentPile += testInput;
+				currentPile += " ";
+				testInput = file.ReadLine();
+			}
+		}
+
 		Console.WriteLine("Enter the size of the pile");
 		int storageSize = Convert.ToInt32(Console.ReadLine());
 		Console.WriteLine("Enter the number of available logs");
 		int availableLogs = Convert.ToInt32(Console.ReadLine());
 		int storageSizeSquared = storageSize*storageSize;
-		
-		string testInput = Console.ReadLine();
-		string currentPile = "";
-
-		while (testInput!=null)
-		{
-			currentPile += testInput;
-			currentPile += " ";
-			testInput = Console.ReadLine();
-		}
 
 		currentPile = currentPile.TrimEnd();
-		string[] currentPileArrayString = currentPile.Split();
+		char[] delimiters = {' ','\t'};
+		string[] currentPileArrayString = currentPile.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 		int[] pileArray = new int[currentPileArrayString.Length];
 
 		for(var i=0; i < currentPileArrayString.Length; i++)
@@ -29,48 +38,44 @@ public class Lumberjack
 			pileArray[i] = Convert.ToInt32(currentPileArrayString[i]);
 		}
 
-		int[] sortedPileArray = pileArray;
-		Array.Sort(sortedPileArray);
-		int smallestPile = sortedPileArray[0];
-		int counter = 1;
+		int[] sortedPileArray = new int[storageSizeSquared];
+		int smallestPile = 0;
+		int counterLogsDropped = 0;
 
-		while(counter <= availableLogs)
+
+		while(counterLogsDropped < availableLogs)
 		{
-			Console.WriteLine("Top of While Loop");
+			smallestPile ++; //smallest pile only grew by 1?
 
-			for(var i =0; i < storageSizeSquared; i++)
+			for(var z =0; z < storageSizeSquared; z++)
 			{
-				Console.WriteLine("Top of for loop");
-				// Console.WriteLine("Pass No.{0}", i);
-
-				if (pileArray[i] == smallestPile)
+				if(counterLogsDropped == availableLogs)
 				{
-					pileArray[i] = pileArray[i]+1;
-					counter = counter + 1;
-					Console.WriteLine(counter);
+					break;
 				}
-			}
-
-			// Console.WriteLine("Counter- {0}", counter);
-
-			if (counter < availableLogs)
-			{
-				// Console.WriteLine("Top of if");
-				sortedPileArray = pileArray;
-				Array.Sort(sortedPileArray);
-				smallestPile = sortedPileArray[0];
+				if (pileArray[z] == smallestPile)
+				{
+					pileArray[z] = pileArray[z]+1;
+					counterLogsDropped = counterLogsDropped + 1;
+				}
 			}
 		}
 
-		for (var i = 0; i<(pileArray.Length+1); i++)
+
+		Console.WriteLine(" ");
+		Console.WriteLine("--- Output ---");
+
+		for (var i = 0; i<(pileArray.Length); i++)
 		{
-			if(i%storageSize==0)
+			int r = i + 1;
+
+			if(r % storageSize == 0)
 			{
-				Console.WriteLine("{0}", pileArray.Length);
+				Console.WriteLine("{0}", pileArray[i]);
 			}
 			else
 			{
-				Console.Write("{0} ", pileArray.Length);
+				Console.Write("{0} ", pileArray[i]);
 			}
 		}
 
